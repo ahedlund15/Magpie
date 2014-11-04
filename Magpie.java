@@ -42,12 +42,17 @@ public class Magpie //changed so it's not 2
     {
       response = "Tell me more about your family.";
     }
-    else if (statement.indexOf("cat") >= 0
-               || statement.indexOf("dog") >= 0
+    else if (statement.indexOf("cat") >= 0       //if domesticated animals mentioned
+               || statement.indexOf("dog") >= 0   //asks to tell more about pets
                || statement.indexOf("bird") >= 0
                || statement.indexOf("iguana") >= 0)
     {
       response = "Tell me more about your pets.";
+    }
+    else if (statement.indexOf("Kiang") >= 0       //responds favorably to teachers
+               || statement.indexOf("Landgraf") >= 0)
+    {
+      response = "Dude, that teacher's so cool!";
     }
     else
     {
