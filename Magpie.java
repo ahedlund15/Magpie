@@ -54,7 +54,7 @@ public class Magpie //changed so it's not 2
     {
       response = "Dude, that teacher's so cool!";
     }
-    else if (statement.trim().length() == 0)
+    else if (statement.trim().length() == 0)  //reads statement, trims spaces on sides, checks length
     {
       response = "Please say something.";
     }
@@ -71,7 +71,7 @@ public class Magpie //changed so it's not 2
    */
   private String getRandomResponse()
   {
-    final int NUMBER_OF_RESPONSES = 4;
+    final int NUMBER_OF_RESPONSES = 6;
     double r = Math.random();
     int whichResponse = (int)(r * NUMBER_OF_RESPONSES);
     String response = "";
@@ -91,6 +91,14 @@ public class Magpie //changed so it's not 2
     else if (whichResponse == 3)
     {
       response = "You don't say.";
+    }
+    else if (whichResponse == 4)
+    {
+      response = "Why do you say that?";
+    }
+    else if (whichResponse == 5)
+    {
+      response = "I'm intrigued.";
     }
     
     return response;
