@@ -58,6 +58,16 @@ public class Magpie //changed so it's not 2
     {
       response = "Please say something.";
     }
+    else if (statement.indexOf("am") >= 0)
+    {
+      response = "Are you?";
+    }
+    else if (((statement.indexOf("wet") >= 0) && (statement.indexOf("today") >= 0)) //if the statmement contains
+      || ((statement.indexOf("hot") >= 0) && (statement.indexOf("today") >= 0))     //both of these things
+      || ((statement.indexOf("cold") >= 0) && (statement.indexOf("today") >= 0)))   //or both of these
+    {
+      response = "Tell me more about today's weather.";
+    }
     else
     {
       response = getRandomResponse();
