@@ -54,6 +54,10 @@ public class Magpie //changed so it's not 2
     {
       response = "Dude, that teacher's so cool!";
     }
+    else if (statement.trim().length() == 0)
+    {
+      response = "Please say something.";
+    }
     else
     {
       response = getRandomResponse();
