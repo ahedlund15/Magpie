@@ -68,6 +68,28 @@ public class Magpie //changed so it's not 2
     {
       response = "Tell me more about today's weather.";
     }
+    else if (statement.indexOf("thank you") >= 0
+               || statement.indexOf("Thank you") >= 0)
+    {
+      response = "You're welcome.";
+    }
+    else if (statement.indexOf("homework") >= 0
+               || statement.indexOf("school") >= 0)
+    {
+      int multiples = 2;                          //gives a different answer based on random
+      double f = Math.random();
+      int randResponse = (int)(f * multiples);
+      String otherResponse = "";
+      if (randResponse == 0)
+      {
+        otherResponse = "Do you like school?";
+      }
+      if (randResponse == 1)
+      {
+        otherResponse = "Have you done your homework?";
+      }
+      response = otherResponse;
+    }
     else
     {
       response = getRandomResponse();
