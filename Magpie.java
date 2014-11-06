@@ -28,29 +28,29 @@ public class Magpie //changed so it's not 2
    *            the user statement
    * @return a response based on the rules given
    */
-  public String getResponse(String statement)
-  {
-    String response = "";
+  public String getResponse(String statement) //methods prioritized by where they're written in the code
+  {                                           //ie "mother no" asks why so negative
+    String response = "";                     //issue with "no mother" because no " " before "no"
     if (statement.indexOf(" no") >= 0)     //added a space to the front of "no" so words like
     {                                       // "know" and "connor" won't be taken as negative
       response = "Why so negative?";
     }
-    else if (statement.indexOf("mother") >= 0
-               || statement.indexOf("father") >= 0
-               || statement.indexOf("sister") >= 0
-               || statement.indexOf("brother") >= 0)
+    else if (findKeyword(statement, "mother") >= 0
+               || findKeyword(statement, "father") >= 0
+               || findKeyword(statement, "sister") >= 0
+               || findKeyword(statement, "brother") >= 0)
     {
       response = "Tell me more about your family.";
     }
     else if (statement.indexOf("cat") >= 0       //if domesticated animals mentioned
-               || statement.indexOf("dog") >= 0   //asks to tell more about pets
-               || statement.indexOf("bird") >= 0
-               || statement.indexOf("iguana") >= 0)
+               || findKeyword(statement, "dog") >= 0   //asks to tell more about pets
+               || findKeyword(statement, "bird") >= 0
+               || findKeyword(statement, "iguana") >= 0)
     {
       response = "Tell me more about your pets.";
     }
-    else if (statement.indexOf("Kiang") >= 0       //responds favorably to teachers
-               || statement.indexOf("Landgraf") >= 0)
+    else if (findKeyword(statement, "Kiang") >= 0       //responds favorably to teachers
+               || findKeyword(statement, "Landgraf") >= 0)
     {
       response = "Dude, that teacher's so cool!";
     }
@@ -58,23 +58,23 @@ public class Magpie //changed so it's not 2
     {
       response = "Please say something.";
     }
-    else if (statement.indexOf("am") >= 0)
+    else if (findKeyword(statement, "am") >= 0)
     {
       response = "Are you?";
     }
-    else if (((statement.indexOf("wet") >= 0) && (statement.indexOf("today") >= 0)) //if the statmement contains
-      || ((statement.indexOf("hot") >= 0) && (statement.indexOf("today") >= 0))     //both of these things
-      || ((statement.indexOf("cold") >= 0) && (statement.indexOf("today") >= 0)))   //or both of these
+    else if (((findKeyword(statement, "wet") >= 0) && (findKeyword(statement, "today") >= 0)) //if the statmement contains
+               || ((findKeyword(statement, "hot") >= 0) && (findKeyword(statement, "today") >= 0))     //both of these things
+               || ((findKeyword(statement, "cold") >= 0) && (findKeyword(statement, "today") >= 0)))   //or both of these
     {
       response = "Tell me more about today's weather.";
     }
-    else if (statement.indexOf("thank you") >= 0
-               || statement.indexOf("Thank you") >= 0)
+    else if (findKeyword(statement, "thank you") >= 0
+               || findKeyword(statement, "Thank you") >= 0)
     {
       response = "You're welcome.";
     }
-    else if (statement.indexOf("homework") >= 0
-               || statement.indexOf("school") >= 0)
+    else if (findKeyword(statement, "homework") >= 0
+               || findKeyword(statement, "school") >= 0)
     {
       int multiples = 2;                          //gives a different answer based on random
       double f = Math.random();
@@ -95,6 +95,75 @@ public class Magpie //changed so it's not 2
       response = getRandomResponse();
     }
     return response;
+  }
+  
+  private int findKeyword(String statement, String goal,
+                          int startPos)
+  {
+    String phrase = statement.trim();
+    // The only change to incorporate the startPos is in
+    // the line below
+    int psn = phrase.toLowerCase().indexOf(
+                                           goal.toLowerCase(), startPos);
+    
+    // Refinement--make sure the goal isn't part of a
+    // word
+    while (psn >= 0)
+    {
+      // Find the string of length 1 before and after
+      // the word
+      String before = " ", after = " ";
+      if (psn > 0)
+      {
+        before = phrase.substring(psn - 1, psn)
+          .toLowerCase();
+      }
+      if (psn + goal.length() < phrase.length())
+      {
+        after = phrase.substring(
+                                 psn + goal.length(),
+                                 psn + goal.length() + 1)
+          .toLowerCase();
+      }
+      
+      // If before and after aren't letters, we've
+      // found the word
+      if (((before.compareTo("a") < 0) || (before
+                                             .compareTo("z") > 0)) // before is not a
+            // letter
+            && ((after.compareTo("a") < 0) || (after
+                                                 .compareTo("z") > 0)))
+      {
+        return psn;
+      }
+      
+      // The last position didn't work, so let's find
+      // the next, if there is one.
+      psn = phrase.indexOf(goal.toLowerCase(),
+                           psn + 1);
+      
+    }
+    
+    return -1;
+  }
+  
+  /**
+   * Search for one word in phrase. The search is not case
+   * sensitive. This method will check that the given goal
+   * is not a substring of a longer string (so, for
+   * example, "I know" does not contain "no"). The search
+   * begins at the beginning of the string.
+   * 
+   * @param statement
+   *            the string to search
+   * @param goal
+   *            the string to search for
+   * @return the index of the first occurrence of goal in
+   *         statement or -1 if it's not found
+   */
+  private int findKeyword(String statement, String goal)
+  {
+    return findKeyword(statement, goal, 0);
   }
   
   /**
