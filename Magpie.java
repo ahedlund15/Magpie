@@ -31,7 +31,7 @@ public class Magpie //changed so it's not 2
   public String getResponse(String statement) //methods prioritized by where they're written in the code
   {                                           //ie "mother no" asks why so negative
     String response = "";                     //issue with "no mother" because no " " before "no"
-    if (statement.indexOf(" no") >= 0)     //added a space to the front of "no" so words like
+    if (statement.indexOf("no") >= 0)     //added a space to the front of "no" so words like
     {                                       // "know" and "connor" won't be taken as negative
       response = "Why so negative?";
     }
