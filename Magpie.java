@@ -30,19 +30,19 @@ public class Magpie //changed so it's not 2
    */
   public String getResponse(String statement) //methods prioritized by where they're written in the code
   {                                           //ie "mother no" asks why so negative
-    String response = "";                     //issue with "no mother" because no " " before "no"
-    if (statement.indexOf("no") >= 0)     //added a space to the front of "no" so words like
-    {                                       // "know" and "connor" won't be taken as negative
+    String response = "";                     
+    if (statement.indexOf("no") >= 0)     
+    {                                       
       response = "Why so negative?";
     }
-    else if (findKeyword(statement, "mother") >= 0
+    else if (findKeyword(statement, "mother") >= 0     // so smother doesn't = mother now
                || findKeyword(statement, "father") >= 0
                || findKeyword(statement, "sister") >= 0
                || findKeyword(statement, "brother") >= 0)
     {
       response = "Tell me more about your family.";
     }
-    else if (statement.indexOf("cat") >= 0       //if domesticated animals mentioned
+    else if (findKeyword(statement, "cat") >= 0       //if domesticated animals mentioned
                || findKeyword(statement, "dog") >= 0   //asks to tell more about pets
                || findKeyword(statement, "bird") >= 0
                || findKeyword(statement, "iguana") >= 0)
@@ -60,7 +60,12 @@ public class Magpie //changed so it's not 2
     }
     else if (findKeyword(statement, "am") >= 0)
     {
-      response = "Are you?";
+      if (findKeyword(statement, "no") >= 0
+         || findKeyword(statement, "not") >= 0)
+      {
+        response = "Why not?";
+      }
+      else response = "Are you?";
     }
     else if (((findKeyword(statement, "wet") >= 0) && (findKeyword(statement, "today") >= 0)) //if the statmement contains
                || ((findKeyword(statement, "hot") >= 0) && (findKeyword(statement, "today") >= 0))     //both of these things
@@ -89,6 +94,14 @@ public class Magpie //changed so it's not 2
         otherResponse = "Have you done your homework?";
       }
       response = otherResponse;
+    }
+    else if (findKeyword(statement, "I want", 0) >= 0)
+    {
+      response = transformIWantStatement(statement);
+    }
+    else if (findKeyword(statement, "I like", 0) >= 0)
+    {
+      response = transformILikeStatement(statement);
     }
     else
     {
@@ -164,6 +177,74 @@ public class Magpie //changed so it's not 2
   private int findKeyword(String statement, String goal)
   {
     return findKeyword(statement, goal, 0);
+  }
+  
+  private String transformIWantStatement(String statement)  //makes I want into why/what does that mean
+  {
+    String restOfStatement = "";
+    statement = statement.trim();                                 //trims the statement so that there are not excess spaces
+    String endPunct = statement.substring(statement.length() - 1);  //gets the last punctuation of the sentence
+    if (endPunct.equals(".")
+          || endPunct.equals("!"))
+    {
+      statement = statement.substring(0, statement.length() - 1);   //gets rid of the punctuation
+    }
+    if (findKeyword(statement, "I want to") >= 0)
+    {
+      int wantTo = findKeyword (statement, "I want to", 0);
+      restOfStatement = statement.substring(wantTo + 9).trim(); //gets rid of the "i want to"
+      int multiples = 3;                          
+      double f = Math.random();                          //gets one of two responses to mix it up a bit
+      int randResponse = (int)(f * multiples);
+      String otherResponse = "";
+      if (randResponse == 0)
+      {
+        return "What would it mean to " + restOfStatement + "?";
+      }
+      else if (randResponse == 1)
+      {
+        return "Why do you want to " + restOfStatement + "?";
+      }
+      else
+      {
+        return "What makes you want to " + restOfStatement + "?";
+      }
+    }
+    else
+    {
+      int wantTo = findKeyword (statement, "I want", 0);
+      restOfStatement = statement.substring(wantTo + 6).trim(); //gets rid of the "i want 
+      return "Why do you want " + restOfStatement + "?";
+    }
+    
+    
+  }
+  
+  private String transformILikeStatement(String statement)
+  {
+    statement = statement.trim();
+    String endPunct = statement.substring(statement.length() - 1);
+    if (endPunct.equals(".")
+          || endPunct.equals("!"))
+    {
+      statement = statement.substring(0, statement.length() - 1);
+    }
+    int like = findKeyword (statement, "I like", 0);
+    String restOfStatement = statement.substring(like + 6).trim();
+    return "Why do you like " + restOfStatement + "?";
+  }
+  private String transformIWantSomethingStatement(String statement)
+  {
+    statement = statement.trim();
+    String endPunct = statement.substring(statement.length() - 1);
+    if (endPunct.equals(".")
+          || endPunct.equals("!"))
+    {
+      statement = statement.substring(0, statement.length() - 1);
+    }
+    int like = findKeyword (statement, "I want", 0);
+    String restOfStatement = statement.substring(like + 6).trim();
+    return "Why do you like " + restOfStatement + "?";
   }
   
   /**
